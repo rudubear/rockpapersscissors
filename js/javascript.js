@@ -1,6 +1,6 @@
 console.log("Welcome to the rock papers scissors game");
 
-game();
+//game();
 
 function getComputerChoice() {
     let computerChoice;
