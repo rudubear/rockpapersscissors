@@ -1,72 +1,63 @@
-let gameOn = true;
 let winners = [];
 let playerWinsCounter = 0;
 let computerWinsCounter = 0;
 
 const log = document.getElementById("log");
-log.style.border = "solid 2px black";
-
-const logEntry = document.createElement('div');
-logEntry.style.border = "solid 2px grey";
-logEntry.classList.add('logEntry');
-log.appendChild(logEntry);
-
 const resetButtons = document.getElementsByClassName("resetButtons");
 const resetButton = document.getElementById("resetGameBtn");
 const playButtons = document.getElementsByClassName("playButtons");
-
-resetButtons[0].style.display = "none";
-resetButton.addEventListener("click",resetGame)
-playButtons[0].style.display = "block";
-
 const btns = document.querySelectorAll(".makePlay");
 
-btns.forEach((btn) => {btn.addEventListener('click', function(e) {
-        const logEntry = document.createElement('p');
-        logEntry.style.border = "solid 2px grey";
-        logEntry.classList.add('logEntry')
-        logEntry.textContent = "";
+resetButtons[0].style.display = "none";
+playButtons[0].style.display = "block";
+
+resetButton.addEventListener("click",resetGame)
+btns.forEach((btn) => {btn.addEventListener('click', gameOn)});
+
+function gameOn(e) {
+    const logEntry = document.createElement('p');
+    logEntry.style.border = "solid 2px grey";
+    logEntry.classList.add('logEntry')
+    logEntry.textContent = "";
+
+    const playerChoice = (e.target.getAttribute("value"));
+    const computerChoice = getComputerChoice();
+
+    const result = playRockPaperScissors(playerChoice,computerChoice);
+    winners.push(result[0]);
+
+    if(result[0] === "player") {
+        updateRounds("playerRoundsWon");
+    } else if (result[0] === "computer") {
+        updateRounds("computerRoundsWon");
+    }
+
+    playerWinsCounter = winners.filter(playerWinsCount).length;
+    computerWinsCounter = winners.filter(computerWinsCount).length;
+    const logEntryPlayerResults = "Player has won " + playerWinsCounter + " times.";
+    const logEntryComputerResults = "Computer has won " + computerWinsCounter + " times.";
+
+    logEntry.textContent += "Player chose " + playerChoice + `, Computer chose ` + computerChoice + ".";
+    logEntry.textContent += "\n" + result[1];
     
-        const playerChoice = (e.target.getAttribute("value"));
-        const computerChoice = getComputerChoice();
-
-        const result = playRockPaperScissors(playerChoice,computerChoice);
-        winners.push(result[0]);
-
-        if(result[0] === "player") {
-            updateRounds("playerRoundsWon");
-        } else if (result[0] === "computer") {
-            updateRounds("computerRoundsWon");
-        }
-
-        playerWinsCounter = winners.filter(playerWinsCount).length;
-        computerWinsCounter = winners.filter(computerWinsCount).length;
-        const logEntryPlayerResults = "Player has won " + playerWinsCounter + " times.";
-        const logEntryComputerResults = "Computer has won " + computerWinsCounter + " times.";
-
-        logEntry.textContent += "Player chose " + playerChoice + `, Computer chose ` + computerChoice + ".";
-        logEntry.textContent += "\n" + result[1];
+    if (playerWinsCounter >= 5) {
+        logEntry.textContent += "Player has won this series!";
         
-        if (playerWinsCounter >= 5) {
-            logEntry.textContent += "Player has won this series!";
-            
-            winners = [];
-            playerWinsCounter = 0;
-            computerWinsCounter = 0;
-            updateScoreBoard("playerVictoriesCount");
-            seriesOver();
-        } else if (computerWinsCounter >=5) {
-            logEntry.textContent += "Computer has won this series!";
-            winners = [];
-            playerWinsCounter = 0;
-            computerWinsCounter = 0;
-            updateScoreBoard("computerVictoriesCount");
-            seriesOver();
-        }
-        log.appendChild(logEntry);
-    })
-
-});
+        winners = [];
+        playerWinsCounter = 0;
+        computerWinsCounter = 0;
+        updateScoreBoard("playerVictoriesCount");
+        seriesOver();
+    } else if (computerWinsCounter >=5) {
+        logEntry.textContent += "Computer has won this series!";
+        winners = [];
+        playerWinsCounter = 0;
+        computerWinsCounter = 0;
+        updateScoreBoard("computerVictoriesCount");
+        seriesOver();
+    }
+    log.appendChild(logEntry);
+}
 
 function updateScoreBoard(seriesWinnerCount) {
     const victor = document.getElementById(seriesWinnerCount);
@@ -99,8 +90,6 @@ function updateRounds(roundWinner){
     roundsWon.textContent = Number(roundsWon.textContent)+1;
 }
 
-//game();
-
 function getComputerChoice() {
     let computerChoice;
     switch (getRandomInt(3)){
@@ -123,18 +112,6 @@ function getComputerChoice() {
 function getRandomInt(max = 3) {
     return Math.floor(Math.random() * max );
 }
-/*
-function getPlayerChoice(){
-    let playerChoice;
-    while(!(["rock", "paper", "scissors", null].includes(playerChoice)) ) {
-        playerChoice = prompt("Choose rock, paper or scissors: ");
-        playerChoice = playerChoice ? playerChoice.toLowerCase() : playerChoice;
-        console.log(playerChoice);
-    }
-    console.log("Player chose " + playerChoice);
-    return playerChoice;    
-}
-*/
 
 function playRockPaperScissors(playerSelection, computerselection){
     let winner;
@@ -199,42 +176,3 @@ function playerWinsCount(winner){
 function computerWinsCount(winner){
     return winner === "computer";
 }
-
-/*
-function game(){
-    let gameOn = true;
-    let winners = [];
-    let playerWinsCounter = 0;
-    let computerWinsCounter = 0;
-    let round = 1;
-
-    while(gameOn){
-        console.log("Round " + parseInt(round++) + "!");
-        let playerChoice = getPlayerChoice();
-            if (playerChoice === null){
-                console.log("Player has exited the game");
-                gameOn = false;
-                break;
-            }
-
-        let computerchoice = getComputerChoice();
-        let result = playRockPaperScissors(playerChoice, computerchoice);
-        console.log(result[1]);
-        winners.push(result[0]);
-
-        if (gameOn){
-            playerWinsCounter = winners.filter(playerWinsCount).length;
-            computerWinsCounter = winners.filter(computerWinsCount).length;
-            console.log("Player has won " + playerWinsCounter + " times.");
-            console.log("Computer has won " + computerWinsCounter + " times.");
-            }
-    
-        if (playerWinsCounter >= 5) {
-            console.log("Player has won this series!");
-            gameOn = false;
-        } else if (computerWinsCounter >=5) {
-            console.log("Computer has won this series!");
-            gameOn = false;
-        }
-    }    
-}*/
