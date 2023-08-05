@@ -4,14 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href  ="styles.css">
 </head>
 <body>
     <h1>Welcome to the rock papers scissors game!</h1>
     <p>We will play rock, papers, scissors against the computer. The first to win 5 rounds will be declared the victor!</p>
-    <div>
-        <button id="rock" value="rock">Rock</button>
-        <button id="paper" value="paper">Paper</button>
-        <button id="scissors" value="scissors">Scissors</button>
+    <div class="playButtons">
+        <button class="makePlay" value="rock">Rock</button>
+        <button class="makePlay" value="paper">Paper</button>
+        <button class="makePlay" value="scissors">Scissors</button>
+    </div>
+    <div class="resetButtons">
+        <button id="resetGameBtn" value="reset">Reset</button>
+    </div>
+    <div id="container">
+        <div class="scoreBoard">
+            <p>Player Series Wins  </p>
+            <p id="playerVictoriesCount">0</p>
+            <p>Player Rounds Won</p>
+            <p id="playerRoundsWon">0</p>
+        </div>
+        <div class="scoreBoard">
+            <p>Computer Series Wins</p>
+            <p id="computerVictoriesCount">0</p>
+            <p>Computer Rounds Won</p>
+            <p id="computerRoundsWon">0</p>
+        </div>
+        <div id="log">
+
+        </div>
     </div>
 </body>
 <footer>

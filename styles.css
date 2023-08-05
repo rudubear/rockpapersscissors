@@ -1,0 +1,33 @@
+* {
+    text-align: center;
+}
+
+#log {
+    display: flex;
+    flex-direction:column;
+    width: 300px;
+}
+.logEntry {
+    margin: 0px;
+    white-space: pre-line;
+    width: 300px;
+}
+
+#container {
+    display: flex;
+    justify-content: center;
+    margin: 24px;
+}
+
+.scoreBoard {
+    height: 100px;
+    width: 200px;
+}
+
+.playButtons {
+    display: block;
+}
+
+/*.resetButtons {
+    display: inline-block;
+}/*
